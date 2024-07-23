@@ -16,7 +16,7 @@ function shuffleAndDownload() {
     }
 
     const prefixes = ["050", "055", "054", "056",];
-    const numUniqueNumbers = 1000;
+    const numUniqueNumbers = 1500;
 
     // Additional digits to incorporate in shuffling
     const additionalDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];

@@ -3,19 +3,20 @@ function shuffleAndDownload() {
     const inputNumbers = document.getElementById('inputNumber').value.trim().split(',');
 
     // Validate input
-    if (inputNumbers.length > 500) {
+    if (inputNumbers.length > 50) {
         alert("Please enter up to 50 numbers.");
         return;
     }
 
     for (let num of inputNumbers) {
         if (num.length !== 10 || !/^\d{10}$/.test(num)) {
-            alert("Please ensure all numbers are valid 10-digit numbers.");
+            alert("Please ensure all numbers are valid 12-digit numbers.");
             return;
         }
     }
 
-    const prefixes = ["050", "055", "054", "056",];
+    // Updated prefixes for 12-digit numbers
+    const prefixes = ["97150", "97155", "97154", "97156"];
     const numUniqueNumbers = 1500;
 
     // Additional digits to incorporate in shuffling
@@ -30,7 +31,6 @@ function shuffleAndDownload() {
     // Generate a batch of shuffled numbers
     function generateBatch(inputNumber) {
         let shuffledNumbers = new Set();
-        let numGenerated = 0;
 
         while (shuffledNumbers.size < numUniqueNumbers) {
             prefixes.forEach(prefix => {
@@ -68,17 +68,18 @@ function shuffleAndDownload() {
             }
         });
 
-        // Create Excel workbook and sheet
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        XLSX.utils.book_append_sheet(wb, ws, 'ShuffledNumbers');
+        // Convert data to CSV format
+        const csvContent = data.map(row => row.join(',')).join('\n');
 
-        // Save Excel file
-        try {
-            XLSX.writeFile(wb, 'ShuffledNumbers.xlsx');
-        } catch (e) {
-            console.error('Error saving file:', e);
-        }
+        // Create a blob for the CSV file and trigger a download
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'ShuffledNumbers.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     });
 }
 
@@ -116,11 +117,11 @@ function shuffleNumber(number, prefix, additionalDigits, patternMapping) {
     // Combine prefix and shuffled digits
     let shuffledNumber = prefix + shuffledDigits.join('');
 
-    // Ensure the shuffled number is exactly 10 digits long
-    if (shuffledNumber.length > 10) {
-        shuffledNumber = shuffledNumber.slice(0, 10); // Truncate to 10 digits
-    } else if (shuffledNumber.length < 10) {
-        const remainingLength = 10 - shuffledNumber.length;
+    // Ensure the shuffled number is exactly 12 digits long
+    if (shuffledNumber.length > 12) {
+        shuffledNumber = shuffledNumber.slice(0, 12); // Truncate to 12 digits
+    } else if (shuffledNumber.length < 12) {
+        const remainingLength = 12 - shuffledNumber.length;
         shuffledNumber += additionalDigits.slice(0, remainingLength).join(''); // Pad with additional digits
     }
 

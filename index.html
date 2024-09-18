@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shuffle Numbers</title>
+    <title>Comprehensive Phone Number Shuffler</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
+        /* [CSS styling remains the same to retain the modern UI] */
+        /* Reset CSS */
         * {
             margin: 0;
             padding: 0;
@@ -14,119 +12,649 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to bottom right, #e0ffff, #cce0ff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            text-align: center;
-            animation: fadeIn 1s ease-in-out;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 40px;
         }
 
         h1 {
-            font-size: 32px;
-            color: #336699;
-            margin-bottom: 30px;
+            text-align: center;
+            margin: 30px 0;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
 
-        .input-section {
-            margin-bottom: 40px;
+        .section {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
 
-        label {
-            display: block;
-            font-size: 18px;
-            color: #555;
+        .section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            font-size: 1.1rem;
             margin-bottom: 10px;
+            color: #eee;
         }
 
-        input[type="text"] {
+        .input-group input {
+            font-size: 1rem;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn {
             width: 100%;
             padding: 15px;
-            font-size: 18px;
-            border: 2px solid #cce0ff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #66b3ff;
-        }
-
-        .shuffle-btn {
-            background-color: #3399ff;
-            color: white;
-            padding: 15px 30px;
-            font-size: 20px;
+            font-size: 1.1rem;
+            background-color: #ff7e5f;
+            color: #fff;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
         }
 
-        .shuffle-btn:hover {
+        .btn:hover {
+            background-color: #feb47b;
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px 0;
+            text-align: center;
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+
+        /* Animation */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .section h2 {
+                font-size: 1.5rem;
             }
         }
     </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
-    <script src="script.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Enter Number and Check Your Luck</h1>
-        <div class="input-section">
-            <label for="inputNumber">Enter 10-digit Number:</label>
-           <input type="text" id="inputNumber" placeholder="Enter numbers separated by commas">
+    <h1> Comprehensive Phone Number Shuffler</h1>
+
+    <!-- Section 1: Advanced Phone Number Shuffler -->
+    <div class="section">
+        <h2>1. Advanced Phone Number Shuffler</h2>
+        <div class="input-group">
+            <label for="inputNumber1">Enter a 10-digit phone number:</label>
+            <input type="text" id="inputNumber1" maxlength="10" placeholder="e.g., 0503489998">
         </div>
-        <button class="shuffle-btn" onclick="shuffleAndDownload()">Shuffle and Download</button>
+        <button class="btn" onclick="generateNumbers1()">Generate and Download CSV</button>
     </div>
 
+    <!-- Section 2: Repeating Digit Shuffler -->
+    <div class="section">
+        <h2>2. Repeating Digit Shuffler</h2>
+        <div class="input-group">
+            <label for="inputNumber2">Enter a 10-digit phone number:</label>
+            <input type="text" id="inputNumber2" maxlength="10" placeholder="e.g., 0506255455">
+        </div>
+        <button class="btn" onclick="generateNumbers2()">Generate and Download CSV</button>
+    </div>
+
+    <!-- Section 3: Zero-Pair Shuffler -->
+    <div class="section">
+        <h2>3. Zero-Pair Shuffler</h2>
+        <div class="input-group">
+            <label for="inputNumber3">Enter a 10-digit phone number:</label>
+            <input type="text" id="inputNumber3" maxlength="10" placeholder="e.g., 0501607080">
+        </div>
+        <button class="btn" onclick="generateNumbers3()">Generate and Download CSV</button>
+    </div>
+
+    <!-- Section 4: Palindromic Number Shuffler -->
+    <div class="section">
+        <h2>4. Palindromic Number Shuffler</h2>
+        <div class="input-group">
+            <label for="inputNumber4">Enter a 10-digit phone number:</label>
+            <input type="text" id="inputNumber4" maxlength="10" placeholder="e.g., 0502356565">
+        </div>
+        <button class="btn" onclick="generateNumbers4()">Generate and Download CSV</button>
+    </div>
+
+    <!-- Section 5: Specific Digit Shuffler -->
+    <div class="section">
+        <h2>5. Specific Digit Shuffler</h2>
+        <div class="input-group">
+            <label for="inputNumber5">Enter a 10-digit phone number:</label>
+            <input type="text" id="inputNumber5" maxlength="10" placeholder="e.g., 0502356565">
+        </div>
+        <button class="btn" onclick="generateNumbers5()">Generate and Download CSV</button>
+    </div>
+
+    <footer>&copy; TAB </footer>
+
     <script>
-        
-    <script src="script.js"></script>
-        
+        /* ========== Logic for Section 1: Advanced Phone Number Shuffler ========== */
+        function generateNumbers1() {
+            let inputNumber = document.getElementById('inputNumber1').value.trim();
+
+            // Validate the input number
+            if (!/^\d{10}$/.test(inputNumber)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Logic for Advanced Phone Number Shuffler
+            // Implementing the advanced logic as per your initial requirements
+
+            const codes = ['050', '053', '055', '056', '058'];
+            let generatedNumbers = [];
+
+            for (let code of codes) {
+                let codeLength = code.length;
+                let restDigits = inputNumber.slice(codeLength);
+                let digits = restDigits.split('');
+
+                const originalDigits = digits.slice();
+
+                // Shuffle digits at positions 3 and 4 after code prefix
+                let position3 = 3 - codeLength;
+                let position4 = 4 - codeLength;
+                [position3, position4].forEach(pos => {
+                    if (pos >= 0 && pos < digits.length) {
+                        for (let d = 0; d <= 9; d++) {
+                            if (originalDigits[pos] !== d.toString()) {
+                                let tempDigits = originalDigits.slice();
+                                tempDigits[pos] = d.toString();
+                                let number = code + tempDigits.join('');
+                                generatedNumbers.push(number);
+                            }
+                        }
+                    }
+                });
+
+                // Shuffle other digits one at a time
+                for (let pos = 0; pos < digits.length; pos++) {
+                    if (pos !== position3 && pos !== position4) {
+                        for (let d = 0; d <= 9; d++) {
+                            if (originalDigits[pos] !== d.toString()) {
+                                let tempDigits = originalDigits.slice();
+                                tempDigits[pos] = d.toString();
+                                let number = code + tempDigits.join('');
+                                generatedNumbers.push(number);
+                            }
+                        }
+                    }
+                }
+            }
+
+            generatedNumbers = [...new Set(generatedNumbers)];
+
+            downloadCSV(generatedNumbers, 'shuffled_numbers_1.csv');
+        }
+
+        /* ========== Logic for Section 2: Repeating Digit Shuffler ========== */
+        function generateNumbers2() {
+            let inputNumber = document.getElementById('inputNumber2').value.trim();
+
+            // Validate the input number
+            if (!/^\d{10}$/.test(inputNumber)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Logic for Repeating Digit Shuffler
+            const codes = ['050', '053', '055', '056', '058'];
+            let generatedNumbers = [];
+
+            for (let code of codes) {
+                let codeLength = code.length;
+                let restDigits = inputNumber.slice(codeLength);
+                let digits = restDigits.split('');
+
+                const originalDigits = digits.slice();
+
+                // Identify repeating sequences
+                let repeatingSequences = findRepeatingSequences(digits);
+
+                // For each repeating sequence, generate variations
+                repeatingSequences.forEach(seq => {
+                    for (let d = 0; d <= 9; d++) {
+                        if (d.toString() !== originalDigits[seq.positions[0]]) {
+                            let tempDigits = originalDigits.slice();
+                            seq.positions.forEach(pos => {
+                                tempDigits[pos] = d.toString();
+                            });
+                            let number = code + tempDigits.join('');
+                            generatedNumbers.push(number);
+                        }
+                    }
+                });
+
+                // Shuffle other digits one at a time
+                let otherPositions = [...Array(digits.length).keys()].filter(pos => {
+                    return !repeatingSequences.some(seq => seq.positions.includes(pos));
+                });
+
+                otherPositions.forEach(pos => {
+                    for (let d = 0; d <= 9; d++) {
+                        if (originalDigits[pos] !== d.toString()) {
+                            let tempDigits = originalDigits.slice();
+                            tempDigits[pos] = d.toString();
+                            let number = code + tempDigits.join('');
+                            generatedNumbers.push(number);
+                        }
+                    }
+                });
+            }
+
+            generatedNumbers = [...new Set(generatedNumbers)];
+
+            downloadCSV(generatedNumbers, 'shuffled_numbers_2.csv');
+        }
+
+        function findRepeatingSequences(digits) {
+            let sequences = [];
+            let i = 0;
+            while (i < digits.length) {
+                let currentDigit = digits[i];
+                let positions = [i];
+                let j = i + 1;
+                while (j < digits.length && digits[j] === currentDigit) {
+                    positions.push(j);
+                    j++;
+                }
+                if (positions.length >= 2) {
+                    sequences.push({ digit: currentDigit, positions: positions });
+                }
+                i = j;
+            }
+            return sequences;
+        }
+
+        /* ========== Logic for Section 3: Zero-Pair Shuffler ========== */
+        function generateNumbers3() {
+            let inputNumber = document.getElementById('inputNumber3').value.trim();
+
+            // Validate the input number
+            if (!/^\d{10}$/.test(inputNumber)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Logic for Zero-Pair Shuffler
+            const codes = ['050', '053', '055', '056', '058'];
+            let generatedNumbers = [];
+
+            for (let code of codes) {
+                let codeLength = code.length;
+                let restDigits = inputNumber.slice(codeLength);
+                let digits = restDigits.split('');
+
+                const originalDigits = digits.slice();
+
+                // Identify non-zero-digit and zero pairs
+                let digitZeroPairs = [];
+                for (let i = 0; i < digits.length - 1; i++) {
+                    if (digits[i] !== '0' && digits[i + 1] === '0') {
+                        digitZeroPairs.push([i, i + 1]);
+                        i++; // Skip the zero since it's part of a pair
+                    }
+                }
+
+                // Generate permutations
+                let pairPermutations = permute(digitZeroPairs);
+
+                pairPermutations.forEach(permutation => {
+                    let tempDigits = digits.slice();
+                    let mapping = {};
+                    for (let i = 0; i < digitZeroPairs.length; i++) {
+                        let originalPair = digitZeroPairs[i];
+                        let permutedPair = permutation[i];
+                        mapping[originalPair[0]] = digits[permutedPair[0]];
+                        mapping[originalPair[1]] = digits[permutedPair[1]];
+                    }
+                    for (let index in mapping) {
+                        tempDigits[index] = mapping[index];
+                    }
+                    let number = code + tempDigits.join('');
+                    generatedNumbers.push(number);
+                });
+
+                // Change non-zero digits not in pairs from 1 to 9
+                let nonPairNonZeroPositions = [];
+                for (let i = 0; i < digits.length; i++) {
+                    if (digits[i] !== '0' && !digitZeroPairs.some(pair => pair.includes(i))) {
+                        nonPairNonZeroPositions.push(i);
+                    }
+                }
+
+                nonPairNonZeroPositions.forEach(pos => {
+                    for (let d = 1; d <= 9; d++) {
+                        if (digits[pos] !== d.toString()) {
+                            let tempDigits = digits.slice();
+                            tempDigits[pos] = d.toString();
+                            let number = code + tempDigits.join('');
+                            generatedNumbers.push(number);
+                        }
+                    }
+                });
+            }
+
+            generatedNumbers = [...new Set(generatedNumbers)];
+
+            downloadCSV(generatedNumbers, 'shuffled_numbers_3.csv');
+        }
+
+        function permute(arr) {
+            let results = [];
+
+            function helper(tempArr, m = []) {
+                if (tempArr.length === 0) {
+                    results.push(m);
+                } else {
+                    for (let i = 0; i < tempArr.length; i++) {
+                        let curr = tempArr.slice();
+                        let next = curr.splice(i, 1);
+                        helper(curr.slice(), m.concat(next));
+                    }
+                }
+            }
+
+            helper(arr);
+            return results;
+        }
+
+        /* ========== Logic for Section 4: Palindromic Number Shuffler ========== */
+        function generateNumbers4() {
+            let inputNumber = document.getElementById('inputNumber4').value.trim();
+
+            // Validate the input number
+            if (!/^\d{10}$/.test(inputNumber)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Logic for Palindromic Number Shuffler
+            const codes = ['050', '053', '055', '056', '058'];
+            let generatedNumbers = [];
+
+            for (let code of codes) {
+                let codeLength = code.length;
+                let restDigits = inputNumber.slice(codeLength);
+                let digits = restDigits.split('');
+
+                let palindromeFound = false;
+                let positions = {};
+                let length = digits.length;
+
+                for (let i = 0; i <= length - 5; i++) {
+                    if (
+                        digits[i] === digits[i + 4] &&
+                        digits[i + 1] === digits[i + 3]
+                    ) {
+                        palindromeFound = true;
+                        positions = {
+                            center: i + 2,
+                            pairs: [
+                                [i, i + 4],
+                                [i + 1, i + 3]
+                            ],
+                            rest: []
+                        };
+                        for (let j = 0; j < digits.length; j++) {
+                            if (![i, i + 1, i + 2, i + 3, i + 4].includes(j)) {
+                                positions.rest.push(j);
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                const originalDigits = digits.slice();
+
+                if (palindromeFound) {
+                    // Step 1: Change the central digit
+                    for (let d = 0; d <= 9; d++) {
+                        let tempDigits = originalDigits.slice();
+                        tempDigits[positions.center] = d.toString();
+                        let number = code + tempDigits.join('');
+                        generatedNumbers.push(number);
+                    }
+
+                    // Step 2: Change the pairs symmetrically
+                    for (let d = 0; d <= 9; d++) {
+                        // Change outer pair
+                        let tempDigitsOuter = originalDigits.slice();
+                        tempDigitsOuter[positions.pairs[0][0]] = d.toString();
+                        tempDigitsOuter[positions.pairs[0][1]] = d.toString();
+                        let numberOuter = code + tempDigitsOuter.join('');
+                        generatedNumbers.push(numberOuter);
+
+                        // Change inner pair
+                        let tempDigitsInner = originalDigits.slice();
+                        tempDigitsInner[positions.pairs[1][0]] = d.toString();
+                        tempDigitsInner[positions.pairs[1][1]] = d.toString();
+                        let numberInner = code + tempDigitsInner.join('');
+                        generatedNumbers.push(numberInner);
+                    }
+
+                    // Step 3: Change both pairs together
+                    for (let outer = 0; outer <= 9; outer++) {
+                        for (let inner = 0; inner <= 9; inner++) {
+                            let tempDigits = originalDigits.slice();
+                            tempDigits[positions.pairs[0][0]] = outer.toString();
+                            tempDigits[positions.pairs[0][1]] = outer.toString();
+                            tempDigits[positions.pairs[1][0]] = inner.toString();
+                            tempDigits[positions.pairs[1][1]] = inner.toString();
+                            let number = code + tempDigits.join('');
+                            generatedNumbers.push(number);
+                        }
+                    }
+
+                    // Step 4: Change starting digits (positions 0 and 1)
+                    for (let pos of [0, 1]) {
+                        if (pos < digits.length) {
+                            for (let d = 0; d <= 9; d++) {
+                                if (digits[pos] !== d.toString()) {
+                                    let tempDigits = digits.slice();
+                                    tempDigits[pos] = d.toString();
+                                    let number = code + tempDigits.join('');
+                                    generatedNumbers.push(number);
+                                }
+                            }
+                        }
+                    }
+
+                    // Step 5: Shuffle other positions not involved in the palindrome
+                    positions.rest.forEach(pos => {
+                        for (let d = 0; d <= 9; d++) {
+                            if (digits[pos] !== d.toString()) {
+                                let tempDigits = digits.slice();
+                                tempDigits[pos] = d.toString();
+                                let number = code + tempDigits.join('');
+                                generatedNumbers.push(number);
+                            }
+                        }
+                    });
+                } else {
+                    // If no palindrome found, change each digit from 0 to 9, one at a time
+                    for (let pos = 0; pos < digits.length; pos++) {
+                        for (let d = 0; d <= 9; d++) {
+                            if (digits[pos] !== d.toString()) {
+                                let tempDigits = digits.slice();
+                                tempDigits[pos] = d.toString();
+                                let number = code + tempDigits.join('');
+                                generatedNumbers.push(number);
+                            }
+                        }
+                    }
+                }
+            }
+
+            generatedNumbers = [...new Set(generatedNumbers)];
+
+            downloadCSV(generatedNumbers, 'shuffled_numbers_4.csv');
+        }
+
+        /* ========== Logic for Section 5: Specific Digit Shuffler ========== */
+        function generateNumbers5() {
+            let inputNumber = document.getElementById('inputNumber5').value.trim();
+
+            // Validate the input number
+            if (!/^\d{10}$/.test(inputNumber)) {
+                alert('Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // Logic for Specific Digit Shuffler
+            const codes = ['050', '053', '055', '056', '058'];
+            let generatedNumbers = [];
+
+            for (let code of codes) {
+                let codeLength = code.length;
+                let restDigits = inputNumber.slice(codeLength);
+                let digits = restDigits.split('');
+
+                const originalDigits = digits.slice();
+
+                // Positions after code prefix:
+                // Assuming the number is '0502356565'
+                // 0: '2', 1: '3', 2: '5', 3: '6', 4: '5', 5: '6', 6: '5'
+
+                // Step 1: Shuffle '2' at position 0 from '0' to '9', keeping rest same
+                for (let d = 0; d <= 9; d++) {
+                    if (digits[0] !== d.toString()) {
+                        let tempDigits = digits.slice();
+                        tempDigits[0] = d.toString();
+                        let number = code + tempDigits.join('');
+                        generatedNumbers.push(number);
+                    }
+                }
+
+                // Step 2: Shuffle '3' at position 1 from '0' to '9', keeping rest same
+                for (let d = 0; d <= 9; d++) {
+                    if (digits[1] !== d.toString()) {
+                        let tempDigits = digits.slice();
+                        tempDigits[1] = d.toString();
+                        let number = code + tempDigits.join('');
+                        generatedNumbers.push(number);
+                    }
+                }
+
+                // Step 3: Shuffle both '6's at positions 3 and 5 from '0' to '9' simultaneously
+                for (let d = 0; d <= 9; d++) {
+                    if (digits[3] !== d.toString()) {
+                        let tempDigits = digits.slice();
+                        tempDigits[3] = d.toString();
+                        tempDigits[5] = d.toString();
+                        let number = code + tempDigits.join('');
+                        generatedNumbers.push(number);
+                    }
+                }
+
+                // Step 4: Shuffle '5's at positions 2, 4, 6 from '1' to '9'
+                let positionsOf5 = [2, 4, 6];
+                positionsOf5.forEach(pos => {
+                    for (let d = 1; d <= 9; d++) {
+                        if (digits[pos] !== d.toString()) {
+                            let tempDigits = digits.slice();
+                            tempDigits[pos] = d.toString();
+                            let number = code + tempDigits.join('');
+                            generatedNumbers.push(number);
+                        }
+                    }
+                });
+
+                // Step 5: Shuffle only the first '5' at position 2, keeping rest same
+                for (let d = 1; d <= 9; d++) {
+                    if (digits[2] !== d.toString()) {
+                        let tempDigits = digits.slice();
+                        tempDigits[2] = d.toString();
+                        let number = code + tempDigits.join('');
+                        generatedNumbers.push(number);
+                    }
+                }
+
+                // Step 6: Shuffle each of positions 2, 3, 4, 5, 6 individually from '0' to '9'
+                let positionsToShuffle = [2, 3, 4, 5, 6];
+                positionsToShuffle.forEach(pos => {
+                    for (let d = 0; d <= 9; d++) {
+                        if (digits[pos] !== d.toString()) {
+                            let tempDigits = digits.slice();
+                            tempDigits[pos] = d.toString();
+                            let number = code + tempDigits.join('');
+                            generatedNumbers.push(number);
+                        }
+                    }
+                });
+            }
+
+            generatedNumbers = [...new Set(generatedNumbers)];
+
+            downloadCSV(generatedNumbers, 'shuffled_numbers_5.csv');
+        }
+
+        /* ========== Common Functions ========== */
+        function downloadCSV(numbersArray, filename) {
+            let csvContent = 'Phone Numbers\n' + numbersArray.join('\n');
+
+            let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

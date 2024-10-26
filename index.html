@@ -1,20 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Modify Multiple CSV Files</title>
+  <title>Merge Multiple CSV Files</title>
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #333333;
+    }
+    .file-input {
+      margin: 20px 0;
+      text-align: center;
+    }
+    #fileInput {
+      display: none;
+    }
+    .custom-file-upload {
+      border: 2px dashed #cccccc;
+      display: inline-block;
+      padding: 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      color: #666666;
+    }
+    .custom-file-upload:hover {
+      background-color: #f0f0f0;
+    }
+    .button {
+      background-color: #28a745;
+      color: #ffffff;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 20px 0;
+      display: block;
+      width: 100%;
+    }
+    .button:hover {
+      background-color: #218838;
+    }
+    #downloadLink {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+    }
+    #downloadLink:hover {
+      text-decoration: underline;
+    }
+    .file-names {
+      margin-top: 10px;
+      text-align: center;
+      color: #555555;
+    }
+    .file-names ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .file-names li {
+      margin: 5px 0;
+    }
+  </style>
 </head>
 <body>
-  <h1>Modify Multiple CSV Files</h1>
-  <input type="file" id="fileInput" accept=".csv" multiple />
-  <br><br>
-  <button id="processButton">Process Files</button>
-  <br><br>
-  <a id="downloadLink" style="display: none;">Download Modified CSV</a>
+  <div class="container">
+    <h1>Merge Multiple CSV Files</h1>
+    <div class="file-input">
+      <label for="fileInput" class="custom-file-upload">
+        Click to select CSV files
+      </label>
+      <input type="file" id="fileInput" accept=".csv" multiple />
+      <div class="file-names" id="fileNames" style="display: none;">
+        <strong>Selected Files:</strong>
+        <ul id="fileList"></ul>
+      </div>
+    </div>
+    <button id="processButton" class="button">Process Files</button>
+    <a id="downloadLink" style="display: none;">Download Modified CSV</a>
+  </div>
 
   <script>
     const fileInput = document.getElementById('fileInput');
     const processButton = document.getElementById('processButton');
     const downloadLink = document.getElementById('downloadLink');
+    const fileNamesDiv = document.getElementById('fileNames');
+    const fileList = document.getElementById('fileList');
+
+    // Display selected file names
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        fileNamesDiv.style.display = 'block';
+        fileList.innerHTML = '';
+        Array.from(fileInput.files).forEach(file => {
+          const listItem = document.createElement('li');
+          listItem.textContent = file.name;
+          fileList.appendChild(listItem);
+        });
+      } else {
+        fileNamesDiv.style.display = 'none';
+        fileList.innerHTML = '';
+      }
+    });
 
     processButton.addEventListener('click', function() {
       if (fileInput.files.length === 0) {
@@ -29,15 +133,16 @@
           const reader = new FileReader();
           reader.onload = function(e) {
             const csvData = e.target.result;
-            const rows = csvData.split('\n');
-            rows.forEach(function(row) {
-              let value = row.trim();
+            const rows = csvData.split('\n').filter(row => row.trim() !== '');
+            // Ignore the first row (header)
+            for (let i = 1; i < rows.length; i++) {
+              let value = rows[i].trim();
               if (value.startsWith('0')) {
                 value = value.substring(1);
               }
               value = '971' + value;
               mergedData.push(value);
-            });
+            }
             resolve();
           };
           reader.onerror = reject;
@@ -51,7 +156,7 @@
         const url = URL.createObjectURL(blob);
         downloadLink.href = url;
         downloadLink.download = 'modified.csv';
-        downloadLink.style.display = 'inline';
+        downloadLink.style.display = 'block';
         downloadLink.textContent = 'Download Modified CSV';
       }).catch(error => {
         console.error('Error reading files:', error);

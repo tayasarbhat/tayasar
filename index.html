@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Modify Multiple CSV Files</title>
+  <title>Merge CSV Files</title>
   <style>
+    /* General Styles */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -25,7 +26,7 @@
       position: relative;
       z-index: 2;
       width: 90%;
-      max-width: 600px;
+      max-width: 800px;
       margin: 50px auto;
       background-color: rgba(255, 255, 255, 0.9);
       padding: 30px;
@@ -37,6 +38,7 @@
       text-align: center;
       color: #333333;
     }
+    /* File Input Styles */
     .file-input {
       margin: 20px 0;
       text-align: center;
@@ -57,6 +59,7 @@
     .custom-file-upload:hover {
       background-color: #f0f0f0;
     }
+    /* Button Styles */
     .button {
       background-color: #28a745;
       color: #ffffff;
@@ -73,29 +76,63 @@
     .button:hover {
       background-color: #218838;
     }
-    #downloadLink {
+    /* Statistics Section Styles */
+    .stats-section {
+      margin-top: 30px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      color: #333333;
+    }
+    .stats-section h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+    .stats-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .stats-list li {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    /* Download Links Styles */
+    .download-section {
+      margin-top: 30px;
+    }
+    .download-section h2 {
+      text-align: center;
+      color: #333333;
+    }
+    .download-item {
+      background-color: #f0f0f0;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .download-item a {
       text-decoration: none;
       color: #007bff;
       font-size: 16px;
-      display: block;
-      text-align: center;
-      margin-top: 20px;
     }
-    #downloadLink:hover {
+    .download-item a:hover {
       text-decoration: underline;
     }
+    /* File Names Styles */
     .file-names {
       margin-top: 10px;
       text-align: center;
       color: #555555;
     }
-    .file-names ul {
-      list-style-type: none;
+    .file-names p {
+      margin: 0;
       padding: 0;
     }
-    .file-names li {
-      margin: 5px 0;
-    }
+    /* Attribution Styles */
     .attribution {
       text-align: center;
       font-size: 12px;
@@ -116,7 +153,7 @@
 <body>
   <div class="overlay"></div>
   <div class="container">
-    <h1>Modify Multiple CSV Files</h1>
+    <h1>Merge CSV Files</h1>
     <div class="file-input">
       <label for="fileInput" class="custom-file-upload">
         Click to select CSV files
@@ -124,14 +161,25 @@
       <input type="file" id="fileInput" accept=".csv" multiple />
       <div class="file-names" id="fileNames" style="display: none;">
         <strong>Selected Files:</strong>
-        <ul id="fileList"></ul>
+        <p id="fileList"></p>
       </div>
     </div>
     <button id="processButton" class="button">Process Files</button>
-    <a id="downloadLink" style="display: none;">Download Modified CSV</a>
+    <!-- Statistics Section -->
+    <div class="stats-section" id="statsSection" style="display: none;">
+      <h2>Processing Summary</h2>
+      <ul class="stats-list">
+        <li>Total Files Merged: <span id="totalFiles"></span></li>
+        <li>Total Records Found: <span id="totalRecords"></span></li>
+        <li>Duplicates Removed: <span id="duplicatesRemoved"></span></li>
+      </ul>
+    </div>
+    <div class="download-section" id="downloadSection" style="display: none;">
+      <h2>Generated Files</h2>
+      <div id="downloadList"></div>
+    </div>
   </div>
   
-
   <script>
     // Your Unsplash API Access Key
     const UNSPLASH_ACCESS_KEY = 'v7PaeqIlbJKzwBp67VUMQ91HKHyxBPwDDOLcCVl5KVM';
@@ -162,23 +210,24 @@
 
     const fileInput = document.getElementById('fileInput');
     const processButton = document.getElementById('processButton');
-    const downloadLink = document.getElementById('downloadLink');
     const fileNamesDiv = document.getElementById('fileNames');
     const fileList = document.getElementById('fileList');
+    const statsSection = document.getElementById('statsSection');
+    const totalFilesElement = document.getElementById('totalFiles');
+    const totalRecordsElement = document.getElementById('totalRecords');
+    const duplicatesRemovedElement = document.getElementById('duplicatesRemoved');
+    const downloadSection = document.getElementById('downloadSection');
+    const downloadList = document.getElementById('downloadList');
 
-    // Display selected file names
+    // Display selected file names separated by commas
     fileInput.addEventListener('change', function() {
       if (fileInput.files.length > 0) {
         fileNamesDiv.style.display = 'block';
-        fileList.innerHTML = '';
-        Array.from(fileInput.files).forEach(file => {
-          const listItem = document.createElement('li');
-          listItem.textContent = file.name;
-          fileList.appendChild(listItem);
-        });
+        const fileNamesArray = Array.from(fileInput.files).map(file => file.name);
+        fileList.textContent = fileNamesArray.join(', ');
       } else {
         fileNamesDiv.style.display = 'none';
-        fileList.innerHTML = '';
+        fileList.textContent = '';
       }
     });
 
@@ -188,7 +237,8 @@
         return;
       }
       const files = fileInput.files;
-      let mergedData = [];
+      let mergedData = new Set();
+      let totalRecords = 0;
 
       const readFiles = Array.from(files).map(file => {
         return new Promise((resolve, reject) => {
@@ -197,13 +247,14 @@
             const csvData = e.target.result;
             const rows = csvData.split('\n').filter(row => row.trim() !== '');
             // Ignore the first row (header)
+            totalRecords += (rows.length - 1); // Exclude header
             for (let i = 1; i < rows.length; i++) {
               let value = rows[i].trim();
               if (value.startsWith('0')) {
                 value = value.substring(1);
               }
               value = '971' + value;
-              mergedData.push(value);
+              mergedData.add(value);
             }
             resolve();
           };
@@ -213,13 +264,59 @@
       });
 
       Promise.all(readFiles).then(() => {
-        const newCsvData = mergedData.join('\n');
-        const blob = new Blob([newCsvData], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
-        downloadLink.href = url;
-        downloadLink.download = 'modified.csv';
-        downloadLink.style.display = 'block';
-        downloadLink.textContent = 'Download Modified CSV';
+        // Convert Set to Array and remove duplicates
+        const uniqueData = Array.from(mergedData);
+        const duplicatesRemoved = totalRecords - uniqueData.length;
+
+        // Display statistics
+        statsSection.style.display = 'block';
+        totalFilesElement.textContent = files.length;
+        totalRecordsElement.textContent = totalRecords;
+        duplicatesRemovedElement.textContent = duplicatesRemoved;
+
+        // Split data into chunks of 9000
+        const chunkSize = 9000;
+        const chunks = [];
+        for (let i = 0; i < uniqueData.length; i += chunkSize) {
+          chunks.push(uniqueData.slice(i, i + chunkSize));
+        }
+        
+         // Get today's date in DDMMYY format
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = String(today.getFullYear()).slice(-2);
+    const dateStr = `${day}${month}${year}`;
+
+        // Clear previous download links
+        downloadList.innerHTML = '';
+        downloadSection.style.display = 'block';
+
+        chunks.forEach((chunk, index) => {
+          const newCsvData = chunk.join('\n');
+          const blob = new Blob([newCsvData], { type: 'text/csv' });
+          const url = URL.createObjectURL(blob);
+
+          // Create download link
+          const downloadItem = document.createElement('div');
+          downloadItem.classList.add('download-item');
+
+          const fileInfo = document.createElement('div');
+          fileInfo.innerHTML = `
+            <strong>File ${index + 1}</strong><br>
+            Records: ${chunk.length}<br>
+            Size: ${(blob.size / 1024).toFixed(2)} KB
+          `;
+
+          const downloadLink = document.createElement('a');
+          downloadLink.href = url;
+          downloadLink.download = `Numbers_${dateStr}_part_${index + 1}.csv`;
+          downloadLink.textContent = 'Download';
+
+          downloadItem.appendChild(fileInfo);
+          downloadItem.appendChild(downloadLink);
+          downloadList.appendChild(downloadItem);
+        });
       }).catch(error => {
         console.error('Error reading files:', error);
       });

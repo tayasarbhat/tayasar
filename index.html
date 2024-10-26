@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Merge Multiple CSV Files</title>
+  <title>Modify Multiple CSV Files</title>
   <style>
     body {
-      background-color: #f4f6f9;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #ffffff;
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.0);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
     }
     .container {
+      position: relative;
+      z-index: 2;
       width: 90%;
       max-width: 600px;
       margin: 50px auto;
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.9);
       padding: 30px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
+      color: #333333;
     }
     h1 {
       text-align: center;
@@ -36,6 +51,8 @@
       cursor: pointer;
       border-radius: 8px;
       color: #666666;
+      background-color: #f9f9f9;
+      transition: background-color 0.3s ease;
     }
     .custom-file-upload:hover {
       background-color: #f0f0f0;
@@ -51,6 +68,7 @@
       margin: 20px 0;
       display: block;
       width: 100%;
+      transition: background-color 0.3s ease;
     }
     .button:hover {
       background-color: #218838;
@@ -78,11 +96,27 @@
     .file-names li {
       margin: 5px 0;
     }
+    .attribution {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 20px;
+      color: #aaaaaa;
+      position: relative;
+      z-index: 2;
+    }
+    .attribution a {
+      color: #aaaaaa;
+      text-decoration: none;
+    }
+    .attribution a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
+  <div class="overlay"></div>
   <div class="container">
-    <h1>Merge Multiple CSV Files</h1>
+    <h1>Modify Multiple CSV Files</h1>
     <div class="file-input">
       <label for="fileInput" class="custom-file-upload">
         Click to select CSV files
@@ -96,8 +130,36 @@
     <button id="processButton" class="button">Process Files</button>
     <a id="downloadLink" style="display: none;">Download Modified CSV</a>
   </div>
+  
 
   <script>
+    // Your Unsplash API Access Key
+    const UNSPLASH_ACCESS_KEY = 'v7PaeqIlbJKzwBp67VUMQ91HKHyxBPwDDOLcCVl5KVM';
+
+    // Function to fetch a random image from Unsplash
+    function fetchRandomBackground() {
+      fetch('https://api.unsplash.com/photos/random?query=landscape,nature&orientation=landscape', {
+        headers: {
+          'Authorization': 'Client-ID ' + UNSPLASH_ACCESS_KEY
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.urls && data.urls.full) {
+          const imageUrl = data.urls.full + '&w=' + window.innerWidth + '&q=80&fm=jpg&crop=entropy';
+          document.body.style.backgroundImage = 'url("' + imageUrl + '")';
+        } else {
+          console.error('Failed to load background image.');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching background image:', error);
+      });
+    }
+
+    // Call the function to fetch and set the background image
+    fetchRandomBackground();
+
     const fileInput = document.getElementById('fileInput');
     const processButton = document.getElementById('processButton');
     const downloadLink = document.getElementById('downloadLink');
